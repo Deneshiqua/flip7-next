@@ -1,0 +1,204 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(ellipse at center, #1E1E3A 0%, #1A1A2E 100%);
+  padding-bottom: 20px;
+}
+
+/* Top Bar */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #25253D;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.gameTitle {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  color: #6B4EFF;
+}
+
+.roundBadge {
+  background: #35355A;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #A0A0C0;
+}
+
+/* Player Areas */
+.playerArea {
+  padding: 12px 16px;
+}
+
+.playerAreaMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+}
+
+.playerLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.playerName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.playerScore {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  color: #FFD93D;
+}
+
+.cardsRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 115px;
+  padding: 8px 0;
+}
+
+.modifiersRow {
+  display: flex;
+  gap: 4px;
+  min-height: 85px;
+  padding: 6px 0;
+}
+
+/* Status Badges */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stayed {
+  background: rgba(78, 205, 196, 0.2);
+  color: #4ECDC4;
+}
+
+.busted {
+  background: rgba(255, 71, 87, 0.2);
+  color: #FF4757;
+}
+
+.frozen {
+  background: rgba(100, 149, 237, 0.2);
+  color: #6495ED;
+  animation: frozenPulse 1.5s ease-in-out infinite;
+}
+
+.winner {
+  background: rgba(255, 215, 0, 0.2);
+  color: #FFD93D;
+}
+
+@keyframes frozenPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #35355A, transparent);
+}
+
+.dividerIcon {
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.btn {
+  padding: 16px 32px;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btnPrimary {
+  background: linear-gradient(135deg, #6B4EFF 0%, #5438E0 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(107, 78, 255, 0.3);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 78, 255, 0.4);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: #4ECDC4;
+  border: 2px solid #4ECDC4;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: rgba(78, 205, 196, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Bottom Bar */
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #25253D;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+  color: #A0A0C0;
+}
+
+.turnIndicator {
+  font-weight: 700;
+  color: #4ECDC4;
+}

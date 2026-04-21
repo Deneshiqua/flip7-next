@@ -1,0 +1,151 @@
+.card {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  position: relative;
+  transition: transform 0.3s ease;
+  animation: cardLand 0.3s ease-out;
+}
+
+@keyframes cardLand {
+  0% {
+    transform: translateY(-30px) scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(5px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Number Cards */
+.number {
+  width: 70px;
+  height: 105px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.value {
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Number card color tiers */
+.n0  { background: linear-gradient(135deg, #4A4A6A, #3A3A5A); }
+.n1  { background: linear-gradient(135deg, #6B7ED6, #4A5EAD); }
+.n2  { background: linear-gradient(135deg, #5E8ED6, #3D6EAD); }
+.n3  { background: linear-gradient(135deg, #4EAED6, #2D8AAD); }
+.n4  { background: linear-gradient(135deg, #4ECDB4, #2EADA0); }
+.n5  { background: linear-gradient(135deg, #5DD68A, #3DAD6A); }
+.n6  { background: linear-gradient(135deg, #8DD65D, #6DAD3D); }
+.n7  { background: linear-gradient(135deg, #D6C45D, #ADAA3D); }
+.n8  { background: linear-gradient(135deg, #D6A85D, #AD8A3D); }
+.n9  { background: linear-gradient(135deg, #D68A5D, #AD6A3D); }
+.n10 { background: linear-gradient(135deg, #D66A6A, #AD4A4A); }
+.n11 { background: linear-gradient(135deg, #D65DA0, #AD3D80); }
+.n12 { background: linear-gradient(135deg, #9B6BFF, #7B4BDF); }
+
+/* Face Down */
+.faceDown {
+  width: 70px;
+  height: 105px;
+  background: linear-gradient(135deg, #5438E0, #3A2B9E);
+  border: 3px solid #6B4EFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faceDown::after {
+  content: '7';
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Busted */
+.busted {
+  filter: grayscale(100%) brightness(0.5);
+  opacity: 0.5;
+}
+
+.busted::before {
+  content: '✕';
+  position: absolute;
+  font-size: 3rem;
+  color: #FF4757;
+  z-index: 10;
+  opacity: 0.8;
+}
+
+/* Frozen */
+.frozen {
+  box-shadow: 0 0 20px rgba(100, 149, 237, 0.6);
+  animation: frozenCard 2s ease-in-out infinite;
+}
+
+@keyframes frozenCard {
+  0%, 100% { box-shadow: 0 0 15px rgba(100, 149, 237, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(100, 149, 237, 0.7); }
+}
+
+/* Modifier Cards */
+.modifier {
+  width: 50px;
+  height: 75px;
+  background: linear-gradient(135deg, #FFD93D, #E5B800);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+}
+
+.modifier .value {
+  font-size: 1.3rem;
+  color: #1A1A2E;
+}
+
+.modifier.x2 {
+  background: linear-gradient(135deg, #FF6B6B, #E54C4C);
+}
+
+.modifier.x2 .value {
+  color: white;
+}
+
+/* Action Cards */
+.action {
+  width: 70px;
+  height: 105px;
+  background: linear-gradient(135deg, #FF6B6B, #E54C4C);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+  color: white;
+}
+
+.action.triggering {
+  animation: actionTrigger 0.5s ease-out;
+}
+
+@keyframes actionTrigger {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); box-shadow: 0 0 40px rgba(255, 107, 107, 0.8); }
+  100% { transform: scale(1); }
+}
