@@ -266,16 +266,42 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (state.players[0].status !== 'playing') return;
     if (state.deck.length === 0) return;
     const card = state.deck.pop()!;
+    
+    // Check card result before dispatch
+    let saveStatus: string | null = null;
+    const player = state.players[0];
+    if (card.type === 'number') {
+      const numCard = card as NumberCard;
+      const duplicate = player.numberCards.some(c => c.value === numCard.value);
+      if (duplicate) {
+        saveStatus = 'busted';
+      } else if (player.numberCards.length === 6) { // After adding this, would be 7
+        saveStatus = 'winner';
+      }
+    }
+    
     dispatch({ type: 'RESOLVE_CARD', playerIndex: 0, card });
+    
+    if (saveStatus) {
+      saveRoundResult(player.name, player.totalScore, saveStatus, false);
+    }
   }, [state.deck, state.players]);
 
   const playerStay = useCallback(() => {
     dispatch({ type: 'PLAYER_STAY' });
-  }, []);
+    const player = state.players[0];
+    if (player.status === 'playing') {
+      saveRoundResult(player.name, player.totalScore, 'stayed', false);
+    }
+  }, [state.players]);
 
   const aiStay = useCallback(() => {
+    const aiPlayer = state.players[1];
     dispatch({ type: 'AI_STAY' });
-  }, []);
+    if (aiPlayer.status === 'playing') {
+      saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
+    }
+  }, [state.players]);
 
   const aiTurn = useCallback(() => {
     if (!aiRef.current) return;
@@ -287,16 +313,39 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const newPlayers = [...state.players];
       newPlayers[1] = { ...newPlayers[1], frozen: false };
       dispatch({ type: 'AI_STAY' });
+      if (aiPlayer.status === 'playing') {
+        saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
+      }
       return;
     }
 
     const decision = aiRef.current.decide(state, 1);
     if (decision.action === 'stay') {
       dispatch({ type: 'AI_STAY' });
+      if (aiPlayer.status === 'playing') {
+        saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
+      }
     } else {
       if (state.deck.length === 0) return;
       const card = state.deck.pop()!;
+      
+      // Check card result before dispatch to determine status
+      let saveStatus: string | null = null;
+      if (card.type === 'number') {
+        const numCard = card as NumberCard;
+        const duplicate = aiPlayer.numberCards.some(c => c.value === numCard.value);
+        if (duplicate) {
+          saveStatus = 'busted';
+        } else if (aiPlayer.numberCards.length === 6) { // After adding this, would be 7
+          saveStatus = 'winner';
+        }
+      }
+      
       dispatch({ type: 'RESOLVE_CARD', playerIndex: 1, card });
+      
+      if (saveStatus) {
+        saveRoundResult(aiPlayer.name, aiPlayer.totalScore, saveStatus, true);
+      }
     }
   }, [state, aiStay]);
 

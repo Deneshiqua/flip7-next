@@ -29,6 +29,7 @@ interface Translations {
   // Buttons
   nextRound: string;
   newGame: string;
+  leaderboard: string;
   
   // Modals
   roundComplete: string;
@@ -59,7 +60,8 @@ const translations: Record<Language, Translations> = {
     flip7Bonus: '+15 Bonus!',
     nextRound: '🔄 Sonraki Raunt',
     newGame: '🏠 Yeni Oyun',
-    roundComplete: 'Raunt Bitti!',
+    leaderboard: '🏆 Liderlik Tablosu',
+    roundComplete: 'Raunt Bitti!',,
     gameOver: 'Oyun Bitti!',
     youWin: '🎉 Sen Kazandın!',
     computerWins: '💻 Bilgisayar Kazandı!',
@@ -85,7 +87,8 @@ const translations: Record<Language, Translations> = {
     flip7Bonus: '+15 Bonus!',
     nextRound: '🔄 Next Round',
     newGame: '🏠 New Game',
-    roundComplete: 'Round Complete!',
+    leaderboard: '🏆 Leaderboard',
+    roundComplete: 'Round Complete!',,
     gameOver: 'Game Over!',
     youWin: '🎉 You Win!',
     computerWins: '💻 Computer Wins!',

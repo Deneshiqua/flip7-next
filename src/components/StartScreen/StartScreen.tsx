@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import { useI18n } from '@/context/I18nContext';
 import { createClient } from '@/utils/supabase/client';
+import Leaderboard from '@/components/Leaderboard/Leaderboard';
 import styles from './StartScreen.module.css';
 
 export default function StartScreen() {
@@ -64,6 +65,8 @@ export default function StartScreen() {
             <li>{lang === 'tr' ? 'İlk 200 puana ulaşan kazanır!' : 'First to 200 points wins!'}</li>
           </ul>
         </div>
+
+        <Leaderboard />
       </div>
     </div>
   );
