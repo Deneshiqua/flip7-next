@@ -1,0 +1,72 @@
+.tableWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(ellipse at center, #1E1E3A 0%, #0D0D1A 100%);
+}
+
+.felt {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  min-height: 600px;
+  background: radial-gradient(ellipse at center, #1a5f2a 0%, #0d3d15 60%, #0a2a0f 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 60px rgba(0, 0, 0, 0.8),
+    inset 0 0 100px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(26, 95, 42, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.rail {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #8B4513 100%);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  z-index: -1;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+}
+
+/* Corner decorations */
+.felt::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .felt {
+    min-height: 500px;
+    border-radius: 40px;
+  }
+  
+  .rail {
+    border-radius: 40px;
+  }
+  
+  .tableWrapper {
+    padding: 10px;
+  }
+}
