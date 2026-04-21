@@ -13,6 +13,7 @@ export default function GameScreen() {
   const opponent = players[1];
 
   const canAct = currentPlayer === 0 && human.status === 'playing';
+  const showPlayAgain = human.status === 'busted' || human.status === 'winner' || opponent.status === 'winner';
 
   // AI turn effect
   useEffect(() => {
@@ -90,20 +91,33 @@ export default function GameScreen() {
 
       {/* Action Buttons */}
       <div className={styles.actionButtons}>
-        <button
-          onClick={playerHit}
-          disabled={!canAct}
-          className={`${styles.btn} ${styles.btnPrimary}`}
-        >
-          🃏 Hit
-        </button>
-        <button
-          onClick={playerStay}
-          disabled={!canAct}
-          className={`${styles.btn} ${styles.btnSecondary}`}
-        >
-          💾 Stay
-        </button>
+        {showPlayAgain ? (
+          <>
+            <button onClick={nextRound} className={`${styles.btn} ${styles.btnPrimary}`}>
+              🔄 Next Round
+            </button>
+            <button onClick={resetGame} className={`${styles.btn} ${styles.btnSecondary}`}>
+              🏠 New Game
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={playerHit}
+              disabled={!canAct}
+              className={`${styles.btn} ${styles.btnPrimary}`}
+            >
+              🃏 Hit
+            </button>
+            <button
+              onClick={playerStay}
+              disabled={!canAct}
+              className={`${styles.btn} ${styles.btnSecondary}`}
+            >
+              💾 Stay
+            </button>
+          </>
+        )}
       </div>
 
       {/* Bottom Bar */}
