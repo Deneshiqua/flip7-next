@@ -55,15 +55,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         createPlayer(0, action.playerName),
         createPlayer(1, 'Computer', true),
       ];
-      // Deal initial cards - type-safe
+      // Deal initial cards - 1 card each to start
       const p1Card1 = deck.pop();
-      const p1Card2 = deck.pop();
       const p2Card1 = deck.pop();
-      const p2Card2 = deck.pop();
       if (p1Card1) players[0].numberCards.push(p1Card1 as NumberCard);
-      if (p1Card2) players[0].numberCards.push(p1Card2 as NumberCard);
       if (p2Card1) players[1].numberCards.push(p2Card1 as NumberCard);
-      if (p2Card2) players[1].numberCards.push(p2Card2 as NumberCard);
 
       return {
         ...state,
@@ -178,15 +174,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         frozen: false,
       }));
 
-      // Deal initial cards - type-safe
+      // Deal initial cards - 1 card each to start
       const p1Card1 = deck.pop();
-      const p1Card2 = deck.pop();
       const p2Card1 = deck.pop();
-      const p2Card2 = deck.pop();
       if (p1Card1) resetPlayers[0].numberCards.push(p1Card1 as NumberCard);
-      if (p1Card2) resetPlayers[0].numberCards.push(p1Card2 as NumberCard);
       if (p2Card1) resetPlayers[1].numberCards.push(p2Card1 as NumberCard);
-      if (p2Card2) resetPlayers[1].numberCards.push(p2Card2 as NumberCard);
 
       return {
         ...state,
