@@ -5,6 +5,7 @@ import { GameState, Player, Card, NumberCard, ModifierCard, ActionCard } from '@
 import { buildDeck, calculateScore } from '@/lib/game';
 import { Flip7AI } from '@/lib/ai';
 import { WINNING_SCORE, FLIP7_BONUS } from '@/types/game';
+import { createClient } from '@/utils/supabase/client';
 
 type GameAction =
   | { type: 'START_GAME'; playerName: string }
@@ -113,7 +114,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       }
 
       newPlayers[playerIndex] = { ...player };
-      return { ...state, players: newPlayers };
+      // Switch turn to opponent after resolving a card
+      const nextPlayer = playerIndex === 0 ? 1 : 0;
+      return { ...state, players: newPlayers, currentPlayer: nextPlayer };
     }
 
     case 'PLAYER_STAY': {
@@ -125,7 +128,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case 'AI_STAY': {
       const newPlayers = [...state.players];
       newPlayers[1] = { ...newPlayers[1], status: 'stayed' };
-      return { ...state, players: newPlayers };
+      // Switch back to human player
+      return { ...state, players: newPlayers, currentPlayer: 0 };
     }
 
     case 'END_ROUND': {
@@ -216,6 +220,38 @@ interface GameContextType {
 }
 
 const GameContext = createContext<GameContextType | null>(null);
+
+async function saveRoundResult(playerName: string, score: number, status: string, isAI: boolean) {
+  const supabase = createClient();
+
+  // Create a game session (no room code needed)
+  const { data: sessionData, error: sessionError } = await supabase
+    .from('game_sessions')
+    .insert({ room_code: null, status: 'completed' })
+    .select()
+    .single();
+
+  if (sessionError || !sessionData) {
+    console.error('Failed to save game session:', sessionError);
+    return;
+  }
+
+  // Save the player result
+  const { error: playerError } = await supabase
+    .from('game_players')
+    .insert({
+      session_id: sessionData.id,
+      profile_id: null,
+      player_name: playerName,
+      score,
+      is_ai: isAI,
+      status,
+    });
+
+  if (playerError) {
+    console.error('Failed to save player result:', playerError);
+  }
+}
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState);
