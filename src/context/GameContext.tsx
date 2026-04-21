@@ -293,6 +293,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (aiPlayer.status === 'playing') {
       saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
     }
+    // Auto end round after AI stays (triggered by human stay)
+    setTimeout(() => dispatch({ type: 'END_ROUND' }), 500);
   }, [state.players]);
 
   const aiTurn = useCallback(() => {

@@ -8,7 +8,7 @@ import GameTable from '@/components/GameTable/GameTable';
 import styles from './GameScreen.module.css';
 
 export default function GameScreen() {
-  const { state, playerHit, playerStay, aiTurn, nextRound, resetGame } = useGame();
+  const { state, playerHit, playerStay, aiTurn, nextRound, resetGame, endRound } = useGame();
   const { t } = useI18n();
   const { players, currentPlayer, round, deck, screen } = state;
   const [showRoundResult, setShowRoundResult] = useState(false);
@@ -32,24 +32,24 @@ export default function GameScreen() {
 
   // Check for round end and show result
   useEffect(() => {
-    if (human.status === 'stayed' || human.status === 'busted' || human.status === 'winner' ||
-        opponent.status === 'stayed' || opponent.status === 'busted' || opponent.status === 'winner') {
-      if (human.status !== 'playing' && opponent.status !== 'playing') {
-        // Calculate round scores
-        const humanScore = human.status === 'busted' ? 0 : 
-          human.numberCards.reduce((sum, c) => sum + c.value, 0) +
-          human.modifierCards.reduce((sum, c) => sum + (c.value === 'x2' ? 0 : c.value as number), 0) +
-          (human.numberCards.length === 7 ? 15 : 0);
-        const opponentScore = opponent.status === 'busted' ? 0 :
-          opponent.numberCards.reduce((sum, c) => sum + c.value, 0) +
-          opponent.modifierCards.reduce((sum, c) => sum + (c.value === 'x2' ? 0 : c.value as number), 0) +
-          (opponent.numberCards.length === 7 ? 15 : 0);
-        
-        setRoundScores({ human: humanScore, opponent: opponentScore });
-        setShowRoundResult(true);
-      }
+    const humanDone = human.status !== 'playing';
+    const opponentDone = opponent.status !== 'playing';
+    
+    if (humanDone && opponentDone && !showRoundResult) {
+      // Both players done - calculate scores
+      const humanScore = human.status === 'busted' ? 0 : 
+        human.numberCards.reduce((sum, c) => sum + c.value, 0) +
+        human.modifierCards.reduce((sum, c) => sum + (c.value === 'x2' ? 0 : c.value as number), 0) +
+        (human.numberCards.length === 7 ? 15 : 0);
+      const opponentScore = opponent.status === 'busted' ? 0 :
+        opponent.numberCards.reduce((sum, c) => sum + c.value, 0) +
+        opponent.modifierCards.reduce((sum, c) => sum + (c.value === 'x2' ? 0 : c.value as number), 0) +
+        (opponent.numberCards.length === 7 ? 15 : 0);
+      
+      setRoundScores({ human: humanScore, opponent: opponentScore });
+      setShowRoundResult(true);
     }
-  }, [human.status, opponent.status]);
+  }, [human.status, opponent.status, showRoundResult]);
 
   if (screen !== 'playing') return null;
 
@@ -163,7 +163,7 @@ export default function GameScreen() {
                 {human.status === 'busted' && t.busted}
                 {opponent.status === 'busted' && (t.hit === 'Hit' ? '💻 Busted!' : '💻 Bilgisayar Patladı!')}
               </div>
-              <button onClick={() => setShowRoundResult(false)} className={`${styles.btn} ${styles.btnPrimary}`}>
+              <button onClick={() => { setShowRoundResult(false); endRound(); }} className={`${styles.btn} ${styles.btnPrimary}`}>
                 {t.nextRound}
               </button>
             </div>
