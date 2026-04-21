@@ -3,22 +3,26 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px;
+  padding: 30px 20px 20px;
   position: relative;
+  min-height: 100%;
 }
 
 /* Round Badge */
 .roundBadge {
   position: absolute;
-  top: 10px;
+  top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.6);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Player Areas */
@@ -26,14 +30,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
+  padding-top: 50px; /* Space for round badge */
 }
 
 .playerAreaPlayer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
+  padding-bottom: 20px;
 }
 
 .playerLabel {

@@ -310,6 +310,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (aiPlayer.status === 'playing') {
         saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
       }
+      // Auto end round after frozen AI stays
+      setTimeout(() => dispatch({ type: 'END_ROUND' }), 800);
       return;
     }
 
@@ -319,6 +321,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (aiPlayer.status === 'playing') {
         saveRoundResult(aiPlayer.name, aiPlayer.totalScore, 'stayed', true);
       }
+      // Auto end round after AI stays (when human already stayed)
+      setTimeout(() => dispatch({ type: 'END_ROUND' }), 800);
     } else {
       if (state.deck.length === 0) return;
       const card = state.deck.pop()!;
