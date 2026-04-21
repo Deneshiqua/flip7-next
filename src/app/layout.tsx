@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
+import { GameProvider } from "@/context/GameContext";
+import { I18nProvider } from "@/context/I18nContext";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -26,7 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fredoka.variable} ${nunito.variable}`}>{children}</body>
+      <body className={`${fredoka.variable} ${nunito.variable}`}>
+        <I18nProvider>
+          <GameProvider>
+            {children}
+          </GameProvider>
+        </I18nProvider>
+      </body>
     </html>
   );
 }

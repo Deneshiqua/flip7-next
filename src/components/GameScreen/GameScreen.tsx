@@ -2,11 +2,13 @@
 
 import React, { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
+import { useI18n } from '@/context/I18nContext';
 import Card from '@/components/Card';
 import styles from './GameScreen.module.css';
 
 export default function GameScreen() {
   const { state, playerHit, playerStay, aiTurn, nextRound, resetGame } = useGame();
+  const { t } = useI18n();
   const { players, currentPlayer, round, deck, screen } = state;
 
   const human = players[0];
@@ -25,17 +27,6 @@ export default function GameScreen() {
     }
   }, [currentPlayer, aiTurn, human.status]);
 
-  // Check for round end
-  useEffect(() => {
-    if (human.status === 'busted' || human.status === 'winner' ||
-        opponent.status === 'busted' || opponent.status === 'winner') {
-      const timer = setTimeout(() => {
-        // Would dispatch END_ROUND here
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [human.status, opponent.status]);
-
   if (screen !== 'playing') return null;
 
   return (
@@ -43,7 +34,7 @@ export default function GameScreen() {
       {/* Top Bar */}
       <header className={styles.topBar}>
         <div className={styles.gameTitle}>🃏 Flip 7</div>
-        <div className={styles.roundBadge}>Round {round}</div>
+        <div className={styles.roundBadge}>{t.round} {round}</div>
       </header>
 
       {/* Opponent Area */}
@@ -60,7 +51,7 @@ export default function GameScreen() {
             <Card key={`facedown-${i}`} card={{ type: 'number', value: 0 }} faceDown />
           ))}
         </div>
-        <StatusBadge status={opponent.status} frozen={opponent.frozen} />
+        <StatusBadge status={opponent.status} frozen={opponent.frozen} t={t} />
       </section>
 
       {/* Divider */}
@@ -72,7 +63,7 @@ export default function GameScreen() {
 
       {/* Player Area */}
       <section className={styles.playerAreaMain}>
-        <StatusBadge status={human.status} frozen={human.frozen} />
+        <StatusBadge status={human.status} frozen={human.frozen} t={t} />
         <div className={styles.cardsRow}>
           {human.numberCards.map((card, i) => (
             <Card key={i} card={card} busted={human.status === 'busted'} frozen={human.frozen} />
@@ -94,10 +85,10 @@ export default function GameScreen() {
         {showPlayAgain ? (
           <>
             <button onClick={nextRound} className={`${styles.btn} ${styles.btnPrimary}`}>
-              🔄 Next Round
+              {t.nextRound}
             </button>
             <button onClick={resetGame} className={`${styles.btn} ${styles.btnSecondary}`}>
-              🏠 New Game
+              {t.newGame}
             </button>
           </>
         ) : (
@@ -107,14 +98,14 @@ export default function GameScreen() {
               disabled={!canAct}
               className={`${styles.btn} ${styles.btnPrimary}`}
             >
-              🃏 Hit
+              🃏 {t.hit}
             </button>
             <button
               onClick={playerStay}
               disabled={!canAct}
               className={`${styles.btn} ${styles.btnSecondary}`}
             >
-              💾 Stay
+              💾 {t.stay}
             </button>
           </>
         )}
@@ -122,9 +113,9 @@ export default function GameScreen() {
 
       {/* Bottom Bar */}
       <footer className={styles.bottomBar}>
-        <span>🃏 Deck: {deck.length}</span>
+        <span>🃏 {t.deck}: {deck.length}</span>
         <span className={styles.turnIndicator}>
-          {currentPlayer === 0 ? 'Your Turn' : 'Opponent Turn'}
+          {currentPlayer === 0 ? t.yourTurn : t.opponentTurn}
         </span>
         <span></span>
       </footer>
@@ -132,10 +123,10 @@ export default function GameScreen() {
   );
 }
 
-function StatusBadge({ status, frozen }: { status: string; frozen: boolean }) {
-  if (status === 'stayed') return <span className={`${styles.badge} ${styles.stayed}`}>💾 Stayed</span>;
-  if (status === 'busted') return <span className={`${styles.badge} ${styles.busted}`}>💥 Busted</span>;
-  if (frozen) return <span className={`${styles.badge} ${styles.frozen}`}>❄️ Frozen</span>;
-  if (status === 'winner') return <span className={`${styles.badge} ${styles.winner}`}>🏆 Winner!</span>;
+function StatusBadge({ status, frozen, t }: { status: string; frozen: boolean; t: any }) {
+  if (status === 'stayed') return <span className={`${styles.badge} ${styles.stayed}`}>{t.stayed}</span>;
+  if (status === 'busted') return <span className={`${styles.badge} ${styles.busted}`}>{t.busted}</span>;
+  if (frozen) return <span className={`${styles.badge} ${styles.frozen}`}>{t.frozen}</span>;
+  if (status === 'winner') return <span className={`${styles.badge} ${styles.winner}`}>{t.winner}</span>;
   return null;
 }
