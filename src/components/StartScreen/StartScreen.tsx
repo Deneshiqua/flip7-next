@@ -4,32 +4,23 @@ import React, { useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import { useI18n } from '@/context/I18nContext';
 import { createClient } from '@/utils/supabase/client';
+import Header from '@/components/Header/Header';
 import Leaderboard from '@/components/Leaderboard/Leaderboard';
 import styles from './StartScreen.module.css';
 
 export default function StartScreen() {
   const [name, setName] = useState('');
   const { startGame } = useGame();
-  const { lang, t, toggleLang } = useI18n();
+  const { t } = useI18n();
 
   const handleStart = async () => {
     const playerName = name.trim() || 'Player';
     startGame(playerName);
-
-    // Save to Supabase if available
-    try {
-      const supabase = createClient();
-      await supabase.from('players').upsert({
-        name: playerName,
-        last_seen: new Date().toISOString(),
-      });
-    } catch (e) {
-      // Supabase not required for gameplay
-    }
   };
 
   return (
     <div className={styles.container}>
+      <Header />
       <div className={styles.content}>
         <h1 className={styles.logo}>{t.logo}</h1>
         <p className={styles.tagline}>{t.tagline}</p>
@@ -49,20 +40,14 @@ export default function StartScreen() {
           </button>
         </div>
 
-        <div className={styles.langToggle}>
-          <button onClick={toggleLang} className={styles.langBtn}>
-            {lang === 'tr' ? '🇹🇷 Türkçe' : '🇬🇧 English'}
-          </button>
-        </div>
-
         <div className={styles.rules}>
           <h3>{t.howToPlay}</h3>
           <ul>
-            <li>{lang === 'tr' ? 'Numara kartları çek (0-12) — Kopya çekme!' : 'Draw Number cards (0-12) — don\'t get duplicates!'}</li>
-            <li>{lang === 'tr' ? 'Kart Çek veya Kal' : 'Choose Hit to draw or Stay to lock in score'}</li>
-            <li>{lang === 'tr' ? '7 benzersiz kart = anında kazanırsın +15 bonus' : 'Flip 7 unique cards = instant win +15 bonus'}</li>
-            <li>{lang === 'tr' ? '❄️ Donma, 🔄 3 Kart Çevir, ♻️ 2. Şans kartlarına dikkat!' : 'Watch out for ❄️ Freeze, 🔄 Flip Three, ♻️ Second Chance'}</li>
-            <li>{lang === 'tr' ? 'İlk 200 puana ulaşan kazanır!' : 'First to 200 points wins!'}</li>
+            <li>{t.hit === 'Hit' ? 'Draw Number cards (0-12) — don\'t get duplicates!' : 'Numara kartları çek (0-12) — Kopya çekme!'}</li>
+            <li>{t.hit === 'Hit' ? 'Choose Hit to draw or Stay to lock in score' : 'Kart Çek veya Kal'}</li>
+            <li>{t.hit === 'Hit' ? 'Flip 7 unique cards = instant win +15 bonus' : '7 benzersiz kart = anında kazanırsın +15 bonus'}</li>
+            <li>{t.hit === 'Hit' ? 'Watch out for ❄️ Freeze, 🔄 Flip Three, ♻️ Second Chance' : '❄️ Donma, 🔄 3 Kart Çevir, ♻️ 2. Şans kartlarına dikkat!'}</li>
+            <li>{t.hit === 'Hit' ? 'First to 200 points wins!' : 'İlk 200 puana ulaşan kazanır!'}</li>
           </ul>
         </div>
 
